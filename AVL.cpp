@@ -154,6 +154,7 @@ int fatorBalanceamento(NO* no) {
     return alturaNo(no->esq) - alturaNo(no->dir);
 }
 
+
 NO* girarDireita(NO* y) {  
    /* Rotação simples à direita  
              y                x  
@@ -269,12 +270,50 @@ NO* removerArvore(NO* no, int valor) {
         no->dir = removerArvore(no->dir, valor);
     }
     else {
-                
+
         // Caso 1: Nó sem filhos
         // Se o nó não possui filhos (esquerda e direita são NULL), basta removê-lo e retornar NULL para o pai.
 
+        if (no->dir == NULL && no->esq == NULL) {
+            free(no);
+            return NULL;
+
+        }
+        else if (no->dir == NULL && no->esq != NULL) {
+            NO* aux = no->esq;
+            free(no);
+            no = aux;
+            return no;
+        }
+        else if (no->dir != NULL && no->esq == NULL){
+            NO* aux = no->dir;
+            free(no);
+            no = aux;
+            return no;
+            }
+
+        else {
+            NO* noPercorrer = no-> dir;
+
+            while (noPercorrer -> esq != NULL) {
+                noPercorrer = noPercorrer->esq;
+            }
+
+            no -> valor = noPercorrer -> valor;
+            
+           no -> dir = removerArvore (no -> dir, noPercorrer -> valor);
+
+        }
+               
+
+
+                
+        
+
         // Caso 2: Nó com apenas um filho
         // Se o nó possui apenas um filho (esquerda ou direita), retorna o ponteiro para esse filho, liberando o nó atual.
+
+       
 
         // Caso 3: Nó com dois filhos
         // Se o nó possui dois filhos, encontra o sucessor (menor valor da subárvore direita),
